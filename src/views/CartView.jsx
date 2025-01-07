@@ -1,17 +1,15 @@
 import Header from "../components/Header.jsx";
-import Hero from "../components/Hero.jsx";
-import Feature from "../components/Feature.jsx";
+import Cart from "../components/Cart.jsx";
 import Footer from "../components/Footer.jsx";
 
-function HomeView() {
+function CartView() {
     return (
         <div>
             <Header />
-            <Hero />
-            <Feature />
+            <Cart />
             <Footer />
         </div>
     )
 }
 
-export default HomeView;
+export default CartView;

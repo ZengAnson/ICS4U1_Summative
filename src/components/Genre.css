@@ -1,0 +1,35 @@
+.genre-container {
+    min-width: 150px;
+    width: 25%;
+    padding: 20px;
+    text-align: center;
+    background-color: #00b85f;
+    justify-content: center;
+    color: white;
+    border: #00d56e;
+    border-width: thick;
+    border-style: solid;
+}
+
+.genre-title {
+    font-size: 35px;
+    padding: 10px;
+    display: block;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.genre-list {
+    color: white;
+    background-color: #00d56e;
+    border-color: transparent;
+    border-radius: 5px;
+    font-size: 20px;
+    height: 40px;
+    padding: 3px;
+    margin: 9px;
+    width: 75%;
+}
+
+.genre-list:hover {
+    background-color: #00fb82;
+}

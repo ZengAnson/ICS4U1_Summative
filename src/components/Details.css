@@ -1,0 +1,35 @@
+.details-movie {
+    width: 75%;
+    background-color: #00b85f;
+    padding: 30px;
+    border: #00d56e;
+    border-width: thick;
+    border-style: solid;
+    color: white;
+}
+
+.details-title {
+    font-size: 35px;
+}
+
+.details-tagline {
+    line-height: 20px;
+}
+
+.details-overview {
+    line-height: 25px;
+}
+
+.trailers-section {
+    padding: 25px 0 0;
+}
+
+.trailers-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+
+.trailer-thumbnail {
+    width: 410px;
+}

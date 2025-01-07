@@ -1,17 +1,15 @@
 import Header from "../components/Header.jsx";
-import Hero from "../components/Hero.jsx";
-import Feature from "../components/Feature.jsx";
+import Register from "../components/Register.jsx";
 import Footer from "../components/Footer.jsx";
 
-function HomeView() {
+function RegisterView() {
     return (
         <div>
             <Header />
-            <Hero />
-            <Feature />
+            <Register />
             <Footer />
         </div>
     )
 }
 
-export default HomeView;
+export default RegisterView;

@@ -1,0 +1,102 @@
+.header {
+    position: relative;
+    background-color: #00d76f;
+    width: 100%;
+    min-width: 600px;
+    height: 60px;
+    color: white;
+}
+
+#logo {
+    position: absolute;
+    top: 5px;
+    left: 15px;
+}
+
+.header-text {
+    position: absolute;
+    top: 15px;
+    font-size: 25px;
+}
+
+.webtitle {
+    position: absolute;
+    left: 80px;
+    font-family: "Fjalla One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.webtitle:hover {
+    color: rgb(237, 237, 237)
+}
+
+.header-frame {
+    position: relative;
+    width: 100%;
+    min-width: 600px;
+    top: 15px;
+}
+
+#search-bar {
+    position: absolute;
+    top: 5px;
+    font-size: 10px;
+    height: 15px;
+    right: 15px;
+    width: 200px;
+    border-color: #01c567;
+    border-radius: 10px;
+    border-width: 3px;
+    background-color: #00d76f;
+    color: white;
+    padding: 3px;
+}
+
+
+::placeholder {
+    color: white;
+    opacity: 1;
+}
+
+#search-button {
+    position: absolute;
+    right: 230px;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+
+/* logged in */
+.welcome-message {
+    position: absolute;
+    font-size: 25px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    left: 35%;
+    transform: translate(-35%, 0);
+}
+
+.sign-in {
+    position: absolute;
+    top: 1.5px;
+    right: 260px;
+}
+
+.signed-buttons {
+    display: inline-block;
+    height: 30px;
+    width: 90px;
+    margin: 0 10px 0;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    text-align: center;
+    background-color: #00b85f;
+    font-size: 17px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+}
+
+.signed-buttons:hover {
+    background-color: #00fb82;
+}
