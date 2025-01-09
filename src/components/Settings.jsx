@@ -1,4 +1,5 @@
 import "./Settings.css";
+import "./Register.css";
 import Collage from "../images/collage.jpeg";
 import { useStoreContext } from "../context";
 import { useState, useRef } from "react";
@@ -78,12 +79,15 @@ function Settings() {
                         <div className="account-title">Genre Selection</div>
                         <label>Please Select At Least 10 Genres</label>
                     </div>
-                    {genres.map((item) => (
-                        <div className="account-genres" key={item.id}>
-                            <input className="account-genres" type="checkbox" id="check" ref={(el) => (checkboxesRef.current[item.id] = el)} />
-                            <label className="account-genres">{item.genre}</label>
-                        </div>
-                    ))}
+                    {genres.map((item) => {
+                        const isSelected = genreList.some (genre => genre.id == item.id);
+                        return (
+                            <div className="account-genres" key={item.id}>
+                                <input className="account-genres" type="checkbox" id="check" defaultChecked={isSelected}ref={(el) => (checkboxesRef.current[item.id] = el)} />
+                                <label className="account-genres">{item.genre}</label>
+                            </div>
+                        )
+                    })}
                     <button className="settings-genre" onClick={() => updateGenres()}>Save Changes</button>
                 </div>
             </div>
