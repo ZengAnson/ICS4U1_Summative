@@ -38,7 +38,6 @@ function Register() {
 
     const registerByEmail = async(event) => {
         event.preventDefault();
-        console.log (auth);
         try {
             if (password != rePass) {
                 return alert("Passwords do not match. Please ensure your passwords match.");
@@ -58,7 +57,7 @@ function Register() {
 
             const user = (await createUserWithEmailAndPassword(auth, email, password)).user;
             await updateProfile(user, { displayName: `${firstName} ${lastName}` });
-            setUser(user);
+            // setUser(user);
             setGenreList(genreSorted);
             setCart(Map());
             setLoggedIn(true);
@@ -67,7 +66,36 @@ function Register() {
             alert("Error creating user with email and password!");
         }
     }
+    
+    const registerByGoogle = async () => {
+        console.log('hi');
+        try {
+            if (password != rePass) {
+                return alert("Passwords do not match. Please ensure your passwords match.");
+            }
 
+            const genreSelected = Object.keys(checkboxesRef.current)
+                .filter((genreId) => checkboxesRef.current[genreId].checked)
+                .map(Number);
+
+            if (genreSelected.length < 10) {
+                return alert("Please select at least 10 genres.");
+            }
+
+            const genreSorted = genreSelected
+                .map((genreId) => genres.find((genre) => genre.id === genreId))
+                .sort((a, b) => a.genre.localeCompare(b.genre));
+            const user = (await signInWithPopup(auth, new GoogleAuthProvider())).user;
+            //   setUser(user);
+            setGenreList(genreSorted);
+            setCart(Map());
+            setLoggedIn(true);
+            return navigate(`/movies/genre/${genreSorted[0]}`);
+        } catch {
+            alert("Error creating user with email and password!");
+        }
+    }
+    
     return (
         <div className="hero">
             <img src={Collage} alt="collage" id="hero-image"></img>
@@ -90,7 +118,7 @@ function Register() {
                         <label className="account-no" onClick={() => navigate("/login")}>Click here</label>
                         <button className="account-button" type="submit">CREATE</button>
                     </form>
-                    <button className="account-button" type="submit">hello</button>
+                    <button className="account-button" onClick={() => registerByGoogle()}>REGISTER WITH GOOGLE</button>
                 </div>
                 <div className="register-item">
                     <div className="account-genre">
