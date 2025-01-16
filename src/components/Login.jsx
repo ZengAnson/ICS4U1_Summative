@@ -20,11 +20,13 @@ function Login() {
 
     async function loginByEmail(event) {
         event.preventDefault();
+        console.log('hello');
         try {
-            const user = (await signInWithEmailAndPassword(auth, email.current.value, password)).user;
+            console.log('hi');
+            const user = (await signInWithEmailAndPassword(auth, email, password)).user;
             // setUser(user);
-            // setLoggedIn(true);
-            // return navigate(`/movies/genre/${genreList[0].id}`);
+            setLoggedIn(true);
+            return navigate(`/movies/genre/${genreList[0].id}`);
         } catch (error) {
             alert("Error signing in!");
         }
@@ -32,16 +34,15 @@ function Login() {
 
     async function loginByGoogle(event){
         event.preventDefault();
-        // try {
-        //     const user = (await signInWithPopup(auth, new GoogleAuthProvider())).user;
-        //     navigate('/movies/all');
-        //     setEmail(email.current.value);
-        // } else {
-        //     alert("Wrong password!");
-        //     setUser(user);
-        // } catch (error) {
-        //     alert("Error signing in!");
-        // }
+        try {
+            const user = (await signInWithPopup(auth, new GoogleAuthProvider())).user;
+            // setUser(user);
+            setLoggedIn(true);
+            return navigate(`/movies/genre/${genreList[0].id}`);
+        } catch (error) {
+            console.log(error);
+            alert("Error signing in!");
+        }
     }
 
     return (
@@ -60,7 +61,7 @@ function Login() {
                         <label className="account-no" onClick={() => navigate("/register")}>Click here</label>
                         <button className="account-button" type="submit">LOGIN</button>
                     </form>
-                    {/* <button className="account-button" onClick={()}></button> */}
+                    <button className="account-button" onClick={(event) => loginByGoogle(event)}>SIGN IN WITH GOOGLE</button>
                 </div>
             </div>
         </div>
