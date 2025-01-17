@@ -3,12 +3,16 @@ import WebFlix from "../images/weblogo.png";
 import Search from "../images/search.png";
 import { useNavigate } from "react-router";
 import { useStoreContext } from "../context";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 
 function Header() {
     const navigate = useNavigate();
-    const { firstName, loggedIn, setLoggedIn } = useStoreContext();
+    const { user, setUser, loggedIn, setLoggedIn } = useStoreContext();
 
     function logout() {
+        setUser (null);
+        signOut (auth);
         setLoggedIn(false);
         return navigate(`/`);
     }
@@ -28,7 +32,7 @@ function Header() {
                 <div>
                     {(loggedIn) ? (
                         <div>
-                            <label className="welcome-message">Welcome {firstName}!</label>
+                            <label className="welcome-message">Welcome {user.displayName}!</label>
                             <div className="sign-in">
                                 <button className="signed-buttons" onClick={() => navigate(`/cart`)}>Cart</button>
                                 <button className="signed-buttons" onClick={() => logout()}>Sign Out</button>

@@ -9,6 +9,7 @@ import CartView from "./views/CartView.jsx";
 import SettingsView from "./views/SettingsView.jsx";
 import ErrorView from "./views/ErrorView.jsx";
 import { StoreProvider } from "./context";
+import ProtectedRoutes from "./util/ProtectedRoutes";
 import './App.css';
 
 function App() {
@@ -19,9 +20,11 @@ function App() {
           <Route path="/" element={<HomeView />} />
           <Route path="/register" element={<RegisterView />} />
           <Route path="/login" element={<LoginView />} />
+          <Route element={<ProtectedRoutes />}>
           <Route path="/movies" element={<MoviesView />}>
-            <Route path="genre/:id" element={<GenreView />} />
-            <Route path="details/:id" element={<DetailView />} />
+              <Route path="genre/:id" element={<GenreView />} />
+              <Route path="details/:id" element={<DetailView />} />
+            </Route>
           </Route>
           <Route path="/cart" element={<CartView />} />
           <Route path="/settings" element={<SettingsView />} />

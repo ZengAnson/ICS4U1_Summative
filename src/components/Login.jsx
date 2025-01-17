@@ -14,7 +14,7 @@ function Login() {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { setLoggedIn, genreList } = useStoreContext();
+    const { setUser, setLoggedIn, genreList } = useStoreContext();
     // const { setUser } = useStoreContext();
   
 
@@ -24,7 +24,7 @@ function Login() {
         try {
             console.log('hi');
             const user = (await signInWithEmailAndPassword(auth, email, password)).user;
-            // setUser(user);
+            setUser(user);
             setLoggedIn(true);
             return navigate(`/movies/genre/${genreList[0].id}`);
         } catch (error) {

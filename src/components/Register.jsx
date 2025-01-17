@@ -11,7 +11,7 @@ import { Map } from 'immutable';
 function Register() {
     const navigate = useNavigate();
     // const { setFirstName, setLastName, setEmail, setPassword, setGenreList, setLoggedIn, setCart } = useStoreContext();
-    const { setGenreList, setLoggedIn, setCart } = useStoreContext(); //add a setUser
+    const { setUser, setGenreList, setLoggedIn, setCart } = useStoreContext(); //add a setUser
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -57,7 +57,7 @@ function Register() {
 
             const user = (await createUserWithEmailAndPassword(auth, email, password)).user;
             await updateProfile(user, { displayName: `${firstName} ${lastName}` });
-            // setUser(user);
+            setUser(user);
             setGenreList(genreSorted);
             setCart(Map());
             setLoggedIn(true);
