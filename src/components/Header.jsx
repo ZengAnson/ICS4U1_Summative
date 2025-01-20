@@ -8,13 +8,18 @@ import { auth } from "../firebase";
 
 function Header() {
     const navigate = useNavigate();
-    const { user, setUser, loggedIn, setLoggedIn } = useStoreContext();
+    const { user, setUser, loggedIn, setLoggedIn, setGenreList } = useStoreContext();
 
-    function logout() {
-        setUser (null);
-        signOut (auth);
-        setLoggedIn(false);
-        return navigate(`/`);
+    async function logout() {
+        try {
+            setUser(null);
+            await signOut (auth);
+            setLoggedIn(false);
+            setGenreList([]);
+            return navigate(`/`);
+        } catch (error) {
+            Alert ("Error signing out");
+        }
     }
 
     return (

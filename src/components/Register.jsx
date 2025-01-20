@@ -6,7 +6,8 @@ import { useState, useRef } from "react";
 import { useStoreContext } from "../context";
 import { createUserWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../firebase";
-import { Map } from 'immutable';
+import { firestore } from "../firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 function Register() {
     const navigate = useNavigate();
@@ -54,14 +55,18 @@ function Register() {
             const genreSorted = genreSelected
                 .map((genreId) => genres.find((genre) => genre.id === genreId))
                 .sort((a, b) => a.genre.localeCompare(b.genre));
-
+            //adding user
             const user = (await createUserWithEmailAndPassword(auth, email, password)).user;
             await updateProfile(user, { displayName: `${firstName} ${lastName}` });
             setUser(user);
+            //storing genres
             setGenreList(genreSorted);
-            setCart(Map());
+            const docRef = doc(firestore, "users", user.email);
+            await setDoc(docRef, { genreSorted });
+            //registered
             setLoggedIn(true);
-            return navigate(`/movies/genre/${genreSorted[0]}`);
+            navigate(`/movies/genre/${genreSorted[0]}`);
+            alert ("Account Created.");
         } catch {
             alert("Error creating user with email and password!");
         }
@@ -85,12 +90,18 @@ function Register() {
             const genreSorted = genreSelected
                 .map((genreId) => genres.find((genre) => genre.id === genreId))
                 .sort((a, b) => a.genre.localeCompare(b.genre));
+
+            //adding user
             const user = (await signInWithPopup(auth, new GoogleAuthProvider())).user;
-            //   setUser(user);
+            setUser(user);
+            //store and sort genres
             setGenreList(genreSorted);
-            setCart(Map());
+            const docRef = doc(firestore, "users", user.email);
+            await setDoc(docRef, { genreSorted });
+            //registered
             setLoggedIn(true);
-            return navigate(`/movies/genre/${genreSorted[0]}`);
+            navigate(`/movies/genre/${genreSorted[0]}`);
+            alert ("Account Created.");
         } catch {
             alert("Error creating user with email and password!");
         }

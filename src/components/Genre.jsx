@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 
 function Genres(prop) {
     const navigate = useNavigate();
+    console.log (prop);
 
     return (
         <div className="genre-container">

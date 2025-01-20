@@ -21,7 +21,7 @@ function App() {
           <Route path="/register" element={<RegisterView />} />
           <Route path="/login" element={<LoginView />} />
           <Route element={<ProtectedRoutes />}>
-          <Route path="/movies" element={<MoviesView />}>
+            <Route path="/movies" element={<MoviesView />}>
               <Route path="genre/:id" element={<GenreView />} />
               <Route path="details/:id" element={<DetailView />} />
             </Route>

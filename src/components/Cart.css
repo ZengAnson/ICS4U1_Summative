@@ -39,6 +39,7 @@
 
 .cart-item {
     width: 250px;
+    border-radius: 8px;
     background-color: #00d56e;
     padding: 25px;
     margin: 30px;
@@ -62,4 +63,12 @@
 
 .cart-button:hover {
     background-color: #00fb82;
+}
+
+.pay {
+    width: 250px;
+    padding: 25px;
+    border-radius: 8px;
+    justify-self: center;
+    background-color: #00d56e;
 }

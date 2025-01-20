@@ -5,28 +5,29 @@ import { useState } from "react";
 import { useStoreContext } from "../context";
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../firebase';
+import { firestore } from "../firebase";
+import { doc, getDoc } from "firebase/firestore";
+
 
 function Login() {
-    // const { email, password, setLoggedIn, genreList } = useStoreContext();
-    // const [ema, setEma] = useState("")
-    // const [pass, setPass] = useState("");
-    // const navigate = useNavigate();
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { setUser, setLoggedIn, genreList } = useStoreContext();
-    // const { setUser } = useStoreContext();
-  
+    const { setUser, setLoggedIn, genreList, setGenreList } = useStoreContext();
 
     async function loginByEmail(event) {
         event.preventDefault();
-        console.log('hello');
         try {
-            console.log('hi');
             const user = (await signInWithEmailAndPassword(auth, email, password)).user;
             setUser(user);
+            //genres
+            const docRef = doc(firestore, "users", user.email);
+            const data = await getDoc(docRef);
+            const genres = data.data().genreSorted;
+            //login
             setLoggedIn(true);
-            return navigate(`/movies/genre/${genreList[0].id}`);
+            navigate(`/movies/genre/${genres[0].id}`);
+            alert ('Successfully signed in.');
         } catch (error) {
             alert("Error signing in!");
         }
@@ -36,11 +37,16 @@ function Login() {
         event.preventDefault();
         try {
             const user = (await signInWithPopup(auth, new GoogleAuthProvider())).user;
-            // setUser(user);
+            setUser(user);
+            //genres
+            const docRef = doc(firestore, "users", user.email);
+            const data = await getDoc(docRef);
+            setGenreList(data.genres);
+            //login
             setLoggedIn(true);
-            return navigate(`/movies/genre/${genreList[0].id}`);
+            navigate(`/movies/genre/${genres[0].id}`);
+            alert ('Successfully signed in.');
         } catch (error) {
-            console.log(error);
             alert("Error signing in!");
         }
     }

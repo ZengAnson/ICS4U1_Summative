@@ -60,8 +60,8 @@ function Settings() {
         <div className="hero">
             <img src={Collage} alt="collage" id="hero-image"></img>
             <div className="shadow"></div>
+            <button className="settings-back" type="submit" onClick={() => navigate(`/movies/genre/${genreList[0].id}`)}>Back</button>
             <div className="register-box">
-                <button className="settings-back" type="submit" onClick={() => navigate(`/movies/genre/${genreList[0].id}`)}>Back</button>
                 <div className="register-item">
                     <div className="account-title">Edit Profile</div>
                     <form onSubmit={(event) => changeName(event)}>
