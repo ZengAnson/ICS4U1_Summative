@@ -14,38 +14,18 @@ function Cart() {
             return alert("Cart is empty.");
         }
 
-        const newCart = purchased.merge(cart);
-        console.log (typeof (newCart));
-        setPurchased (newCart);
-        // //adds cart to firestore
-        // const docRef = doc(firestore, "users", user.email);
-        // await setDoc(docRef, { genreSorted: genreList, previous: newCart.toJS() });
-        // //removes from local storage and react context
-        // localStorage.removeItem(user.email);
-        // setCart(Map());
-        // return alert("Thank you for your purchase!");
-
-        // const docRef = doc(firestore, "users", user.email);
-        // const userData = { purchases: cart.toJS(), };
-        // await setDoc(docRef, userData, { merge: true });
-        // localStorage.removeItem(user.uid);
-        // setCart(Map());
-        // const getPurchases = async () => {
-        //     const docRef = doc(firestore, "users", user.email);
-        //     const data = (await getDoc(docRef)).data();
-        //     setPurchased(Map(data.purchases));
-        // }
-        // getPurchases();
-        // const newCart = purchased.merge(cart);
-        // console.log (newCart);
-        // setPurchased (newCart);
-        // //adds cart to firestore
-        // const docRef = doc(firestore, "users", user.email);
-        // await setDoc(docRef, { genreSorted: genreList, previous: newCart.toJS() });
-        // //removes from local storage and react context
-        // localStorage.removeItem(user.email);
-        // setCart(Map());
-        // return alert("Purchase successful!");
+        const docRef = doc(firestore, "users", user.email);
+        const userData = { purchased: cart.toJS(), };
+        await setDoc(docRef, userData, { merge: true });
+        localStorage.removeItem(user.uid);
+        setCart(Map());
+        const getPurchases = async () => {
+            const docRef = doc(firestore, "users", user.email);
+            const data = (await getDoc(docRef)).data();
+            setPurchased(Map(data.purchased));
+        }
+        getPurchases();
+        alert ("Thanks for shopping at WebFlix!");
     }
 
     function removeItem (key) {

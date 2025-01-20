@@ -11,7 +11,7 @@ function Header() {
     const { user, setUser, setGenreList } = useStoreContext();
 
     function logout() {
-        signOut (auth);
+        signOut(auth);
         setUser(null);
         setGenreList([]);
         return navigate(`/`);

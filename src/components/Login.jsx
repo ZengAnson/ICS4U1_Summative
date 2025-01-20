@@ -7,6 +7,7 @@ import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 
 import { auth } from '../firebase';
 import { firestore } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
+import { signOut } from "firebase/auth";
 
 
 function Login() {
@@ -23,31 +24,66 @@ function Login() {
             //genres
             const docRef = doc(firestore, "users", user.email);
             const data = await getDoc(docRef);
-            setGenreList (data.data().genreSorted);
+            setGenreList(data.data().genreSorted);
             //login
-            navigate(`/movies/genre/${genreList[0].id}`);
-            alert ('Successfully signed in.');
+            navigate(`/movies/genre/0`);
+            alert('Successfully signed in.');
         } catch (error) {
             alert("Error signing in!");
         }
     }
 
-    async function loginByGoogle(event){
-        event.preventDefault();
+    // async function loginByGoogle(){
+    //     try {
+    //         const user = (await signInWithPopup(auth, new GoogleAuthProvider())).user;
+    //         setUser(user);
+    //         //genres
+    //         const docRef = doc(firestore, "users", user.email);
+    //         const data = await getDoc(docRef);
+    //         setGenreList (data.data().sortedGenres);
+    //         //login
+    //         navigate(`/movies/genre/${genreList[0].id}`);
+    //         alert ('Successfully signed in.');
+    //     } catch (error) {
+    //         const auth = getAuth();
+    //         const user = auth.currentUser;
+    //         deleteUser (user);
+    //         alert("Has this account selected 10 preferred genres? If not, please navigate to the register page by clicking the \"Click here\" text below.");
+    //         setUser(null);
+    //         signOut(auth);
+    //     }
+    // }
+
+    async function loginByGoogle() {
         try {
             const user = (await signInWithPopup(auth, new GoogleAuthProvider())).user;
             setUser(user);
-            //genres
             const docRef = doc(firestore, "users", user.email);
             const data = await getDoc(docRef);
-            setGenreList (data.data().genreSorted);
-            //login
-            navigate(`/movies/genre/${genreList[0].id}`);
-            alert ('Successfully signed in.');
+            const genres = data.data().sortedGenres;
+            navigate(`/movies/genre/0`);
         } catch (error) {
-            alert("Error signing in!");
+            console.log(error);
+            alert("Google sign-in error.");
+            // setUser(null);
+            // signOut(auth);
         }
     }
+
+    // async function loginByGoogle() {
+    //     try {
+    //       const user = (await signInWithPopup(auth, new GoogleAuthProvider())).user;
+    //       setUser(user);
+    //       //need to pull genres from firestore to get the correct navigation page
+    //       //this is because the observer in index.jsx does not update quickly enough
+    //       const docRef = doc(firestore, "users", user.email);
+    //       const data = await getDoc(docRef);
+    //       const genres = data.data().sortedGenres;
+    //       navigate(`/movies/genre/${genres[0].id}`);
+    //     } catch (error) {
+    //       alert("Error signing in with Google!");
+    //     }
+    //   }
 
     return (
         <div className="hero">
@@ -60,12 +96,12 @@ function Login() {
                         <label className="account-text">Email:</label>
                         <input className="account-input" type="email" value={email} onChange={(event) => { setEmail(event.target.value) }} required></input>
                         <label className="account-text">Password:</label>
-                        <input className="account-input" type="password" value={password} onChange={(event) => { setPassword(event.target.value)}} required></input>
+                        <input className="account-input" type="password" value={password} onChange={(event) => { setPassword(event.target.value) }} required></input>
                         <label>Don't have an account? </label>
                         <label className="account-no" onClick={() => navigate("/register")}>Click here</label>
                         <button className="account-button" type="submit">LOGIN</button>
                     </form>
-                    <button className="account-button" onClick={(event) => loginByGoogle(event)}>SIGN IN WITH GOOGLE</button>
+                    <button className="account-button" onClick={() => loginByGoogle()}>SIGN IN WITH GOOGLE</button>
                 </div>
             </div>
         </div>

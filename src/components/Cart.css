@@ -68,6 +68,7 @@
 .pay {
     width: 250px;
     padding: 25px;
+    margin: 10px;
     border-radius: 8px;
     justify-self: center;
     background-color: #00d56e;

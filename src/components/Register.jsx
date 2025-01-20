@@ -7,7 +7,8 @@ import { useStoreContext } from "../context";
 import { createUserWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../firebase";
 import { firestore } from "../firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { signOut } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 function Register() {
     const navigate = useNavigate();
@@ -36,7 +37,7 @@ function Register() {
         { id: 37, genre: "Western" }
     ]
 
-    const registerByEmail = async(event) => {
+    const registerByEmail = async (event) => {
         event.preventDefault();
         try {
             if (password != rePass) {
@@ -59,19 +60,19 @@ function Register() {
             await updateProfile(user, { displayName: `${firstName} ${lastName}` });
             setUser(user);
             //storing genres
-            setGenreList (genreSorted);
+            setGenreList(genreSorted);
             const docRef = doc(firestore, "users", user.email);
             const userData = { genres: genreSorted };
             await setDoc(docRef, userData, { merge: true });
             //registered
             navigate(`/movies/genre/${genreSorted[0]}`);
-            alert ("Account Created.");
+            alert("Account Created.");
         } catch (error) {
-            console.log (error);
-            alert("Error creating user with email and password!");
+            console.log(error);
+            alert("Error creating user with email and password.");
         }
     }
-    
+
     const registerByGoogle = async () => {
         console.log('hi');
         try {
@@ -93,21 +94,51 @@ function Register() {
 
             //adding user
             const user = (await signInWithPopup(auth, new GoogleAuthProvider())).user;
-            setUser(user);
-            //storing genres
-            setGenreList (genreSorted);
+
+            const userRecord = await getAuth().getUserByEmail(user.email).catch((error) => null);
+
+            // If the email exists in Firebase Authentication (meaning the user registered with email/password already)
+            if (userRecord) {
+                alert("This email is already associated with an existing account. Please log in using your email and password.");
+                signOut(auth);
+                setUser(null);
+                return;
+            }
+
             const docRef = doc(firestore, "users", user.email);
-            const userData = { genres: genreSorted };
-            await setDoc(docRef, userData, { merge: true });
-            //registered
-            navigate(`/movies/genre/${genreSorted[0]}`);
-            alert ("Account Created.");
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const userData = docSnap.data();
+                if (userData.googleAccount) {
+                    // If the user is already registered via Google
+                    alert("You have already registered with Google.");
+                    signOut(auth);
+                    setUser(null);
+                    return;
+                } else {
+                    // If the user is trying to register via Google but their email is already in use by an email/password registration
+                    alert("This email is already associated with an existing account. Please log in using your email and password.");
+                    signOut(auth);
+                    setUser(null);
+                    return;
+                }
+            } else {
+                console.log('hi');
+                setUser(user);
+                //storing genres
+                setGenreList(genreSorted);
+                const userData = { genres: genreSorted };
+                await setDoc(docRef, userData, { merge: true });
+                //registered
+                navigate(`/movies/genre/${genreSorted[0]}`);
+                alert("Account Created.");
+            }
         } catch (error) {
-            console.log (error);
+            console.log(error);
             alert("Error creating user with email and password!");
         }
     }
-    
+
     return (
         <div className="hero">
             <img src={Collage} alt="collage" id="hero-image"></img>
@@ -121,7 +152,7 @@ function Register() {
                         <label className="account-text">Last Name:</label>
                         <input className="account-input" type="text" value={lastName} onChange={(event) => { setLastName(event.target.value) }} required></input>
                         <label className="account-text">Email:</label>
-                        <input className="account-input" type="email" value={email} onChange={(event) => { setEmail(event.target.value) }}required></input>
+                        <input className="account-input" type="email" value={email} onChange={(event) => { setEmail(event.target.value) }} required></input>
                         <label className="account-text">Password:</label>
                         <input className="account-input" type="password" value={password} onChange={(event) => { setPassword(event.target.value) }} required></input>
                         <label className="account-text">Re-enter Password:</label>

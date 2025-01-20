@@ -70,8 +70,6 @@ function AllMovies() {
             title,
             poster,
         };
-
-        console.log (movieDetails);
         
         setCart((prevCart) => {
           const cart = prevCart.set(String(id), movieDetails);

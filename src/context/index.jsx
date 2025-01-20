@@ -11,7 +11,7 @@ export const StoreProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [genreList, setGenreList] = useState([]);
     const [cart, setCart] = useState(Map());
-    const [purchased, setPurchased] = useState (Map());
+    const [purchased, setPurchased] = useState(Map());
     const [loading, setLoading] = useState(true);
 
     const [firstName, setFirstName] = useState("");
@@ -23,7 +23,7 @@ export const StoreProvider = ({ children }) => {
         onAuthStateChanged(auth, user => {
             if (user) {
                 setUser(user);
-                const sessionCart = localStorage.getItem(`cart_${user.uid}`);
+                const sessionCart = localStorage.getItem(user.uid);
                 if (sessionCart) {
                     setCart(Map(JSON.parse(sessionCart)));
                 } else {
@@ -31,9 +31,9 @@ export const StoreProvider = ({ children }) => {
                 }
                 const getInfo = async () => {
                     try {
-                      const docRef = doc(firestore, "users", user.email);
-                      const snap = await getDoc(docRef);
-                      if (snap.exists()) {
+                        const docRef = doc(firestore, "users", user.email);
+                        const snap = await getDoc(docRef);
+                        if (snap.exists()) {
                             const data = (await getDoc(docRef)).data();
                             setPurchased(Map(data.purchased));
                             setGenreList(data.genres);
@@ -41,22 +41,22 @@ export const StoreProvider = ({ children }) => {
                             setPurchased(Map());
                         }
                     } catch (error) {
-                        console.log (error);
-                      alert("Error has occured.");
+                        console.log(error);
+                        alert("Error has occured.");
                     }
-                  };
-                  getInfo();
+                };
+                getInfo();
             }
             setLoading(false);
         });
     }, [])
-    
+
     if (loading) {
         return <h1>Loading...</h1>
     }
 
     return (
-        <StoreContext.Provider value={{ user, setUser, genreList, setGenreList, cart, setCart, purchased, setPurchased, firstName, setFirstName, lastName, setLastName, email, setEmail, password, setPassword}}>
+        <StoreContext.Provider value={{ user, setUser, genreList, setGenreList, cart, setCart, purchased, setPurchased, firstName, setFirstName, lastName, setLastName, email, setEmail, password, setPassword }}>
             {children}
         </StoreContext.Provider>
     );
