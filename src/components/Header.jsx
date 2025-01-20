@@ -8,13 +8,12 @@ import { auth } from "../firebase";
 
 function Header() {
     const navigate = useNavigate();
-    const { user, setUser, loggedIn, setLoggedIn, setGenreList } = useStoreContext();
+    const { user, setUser, setGenreList } = useStoreContext();
 
     async function logout() {
         try {
-            setUser(null);
             await signOut (auth);
-            setLoggedIn(false);
+            setUser(null);
             setGenreList([]);
             return navigate(`/`);
         } catch (error) {
@@ -35,7 +34,7 @@ function Header() {
             </div>
             <div className="header-frame">
                 <div>
-                    {(loggedIn) ? (
+                    {(user) ? (
                         <div>
                             <label className="welcome-message">Welcome {user.displayName}!</label>
                             <div className="sign-in">
