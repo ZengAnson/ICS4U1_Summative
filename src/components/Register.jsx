@@ -11,8 +11,7 @@ import { doc, setDoc } from "firebase/firestore";
 
 function Register() {
     const navigate = useNavigate();
-    // const { setFirstName, setLastName, setEmail, setPassword, setGenreList, setLoggedIn, setCart } = useStoreContext();
-    const { setUser, setGenreList, setLoggedIn, setCart } = useStoreContext(); //add a setUser
+    const { setUser, setGenreList } = useStoreContext();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -64,7 +63,6 @@ function Register() {
             const docRef = doc(firestore, "users", user.email);
             await setDoc(docRef, { genreSorted });
             //registered
-            setLoggedIn(true);
             navigate(`/movies/genre/${genreSorted[0]}`);
             alert ("Account Created.");
         } catch {
@@ -99,7 +97,6 @@ function Register() {
             const docRef = doc(firestore, "users", user.email);
             await setDoc(docRef, { genreSorted });
             //registered
-            setLoggedIn(true);
             navigate(`/movies/genre/${genreSorted[0]}`);
             alert ("Account Created.");
         } catch {

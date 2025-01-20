@@ -13,7 +13,7 @@ function Login() {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { setUser, setLoggedIn, genreList, setGenreList } = useStoreContext();
+    const { setUser } = useStoreContext();
 
     async function loginByEmail(event) {
         event.preventDefault();
@@ -25,7 +25,6 @@ function Login() {
             const data = await getDoc(docRef);
             const genres = data.data().genreSorted;
             //login
-            setLoggedIn(true);
             navigate(`/movies/genre/${genres[0].id}`);
             alert ('Successfully signed in.');
         } catch (error) {
@@ -41,9 +40,8 @@ function Login() {
             //genres
             const docRef = doc(firestore, "users", user.email);
             const data = await getDoc(docRef);
-            setGenreList(data.genres);
+            const genres = data.data().genreSorted;
             //login
-            setLoggedIn(true);
             navigate(`/movies/genre/${genres[0].id}`);
             alert ('Successfully signed in.');
         } catch (error) {
