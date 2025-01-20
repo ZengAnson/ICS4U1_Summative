@@ -94,17 +94,6 @@ function Register() {
 
             //adding user
             const user = (await signInWithPopup(auth, new GoogleAuthProvider())).user;
-
-            const userRecord = await getAuth().getUserByEmail(user.email).catch((error) => null);
-
-            // If the email exists in Firebase Authentication (meaning the user registered with email/password already)
-            if (userRecord) {
-                alert("This email is already associated with an existing account. Please log in using your email and password.");
-                signOut(auth);
-                setUser(null);
-                return;
-            }
-
             const docRef = doc(firestore, "users", user.email);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
