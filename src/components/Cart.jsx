@@ -66,7 +66,7 @@ function Cart() {
                     cart.entrySeq().map(([key, movie]) => {
                         return (
                             <div className="cart-item" key={key}>
-                                <img src={`https://image.tmdb.org/t/p/w500${movie.url}`} width={"250px"} />
+                                <img src={`https://image.tmdb.org/t/p/w500${movie.poster}`} width={"250px"} />
                                 <label className="cart-movie">{movie.title}</label>
                                 <button className="cart-button" onClick={() => removeItem(key)}>Remove</button>
                             </div>

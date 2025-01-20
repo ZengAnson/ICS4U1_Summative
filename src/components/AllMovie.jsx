@@ -68,8 +68,10 @@ function AllMovies() {
         
         const movieDetails = {
             title,
-            poster
+            poster,
         };
+
+        console.log (movieDetails);
         
         setCart((prevCart) => {
           const cart = prevCart.set(String(id), movieDetails);

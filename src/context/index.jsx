@@ -11,7 +11,7 @@ export const StoreProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [genreList, setGenreList] = useState([]);
     const [cart, setCart] = useState(Map());
-    const [purchased, setPurchased] = useState (new Map());
+    const [purchased, setPurchased] = useState (Map());
     const [loading, setLoading] = useState(true);
 
     const [firstName, setFirstName] = useState("");
@@ -23,7 +23,7 @@ export const StoreProvider = ({ children }) => {
         onAuthStateChanged(auth, user => {
             if (user) {
                 setUser(user);
-                const sessionCart = localStorage.getItem(`cart_${user.email}`);
+                const sessionCart = localStorage.getItem(`cart_${user.uid}`);
                 if (sessionCart) {
                     setCart(Map(JSON.parse(sessionCart)));
                 } else {
@@ -32,16 +32,16 @@ export const StoreProvider = ({ children }) => {
                 const getInfo = async () => {
                     try {
                       const docRef = doc(firestore, "users", user.email);
-                      const data = await getDoc(docRef);
-                      if (data.exists()) {
-                        const genres = data.data().genreSorted;
-                        setGenreList(genres);
-                        const prevCart = Map(data.data().previous);
-                        setPurchased(prevCart);
-                      } else {
-                        setPurchased(Map());
-                      }
+                      const snap = await getDoc(docRef);
+                      if (snap.exists()) {
+                            const data = (await getDoc(docRef)).data();
+                            setPurchased(Map(data.purchased));
+                            setGenreList(data.genres);
+                        } else {
+                            setPurchased(Map());
+                        }
                     } catch (error) {
+                        console.log (error);
                       alert("Error has occured.");
                     }
                   };

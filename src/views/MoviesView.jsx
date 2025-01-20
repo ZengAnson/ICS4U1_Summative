@@ -8,6 +8,7 @@ import "./MoviesView.css";
 
 function Movies() {
     const { genreList } = useStoreContext();
+    console.log (genreList);
 
     return (
         <div>

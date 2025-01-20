@@ -10,15 +10,11 @@ function Header() {
     const navigate = useNavigate();
     const { user, setUser, setGenreList } = useStoreContext();
 
-    async function logout() {
-        try {
-            await signOut (auth);
-            setUser(null);
-            setGenreList([]);
-            return navigate(`/`);
-        } catch (error) {
-            Alert ("Error signing out");
-        }
+    function logout() {
+        signOut (auth);
+        setUser(null);
+        setGenreList([]);
+        return navigate(`/`);
     }
 
     return (
