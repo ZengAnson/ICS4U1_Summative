@@ -11,7 +11,7 @@ import { doc, setDoc } from "firebase/firestore";
 
 function Register() {
     const navigate = useNavigate();
-    const { setUser, setGenreList } = useStoreContext();
+    const { setUser, genreList, setGenreList } = useStoreContext();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -59,13 +59,15 @@ function Register() {
             await updateProfile(user, { displayName: `${firstName} ${lastName}` });
             setUser(user);
             //storing genres
-            setGenreList(genreSorted);
+            setGenreList (genreSorted);
             const docRef = doc(firestore, "users", user.email);
-            await setDoc(docRef, { genreSorted });
+            const userData = { genres: genreSorted };
+            await setDoc(docRef, userData, { merge: true });
             //registered
             navigate(`/movies/genre/${genreSorted[0]}`);
             alert ("Account Created.");
-        } catch {
+        } catch (error) {
+            console.log (error);
             alert("Error creating user with email and password!");
         }
     }
@@ -92,14 +94,16 @@ function Register() {
             //adding user
             const user = (await signInWithPopup(auth, new GoogleAuthProvider())).user;
             setUser(user);
-            //store and sort genres
-            setGenreList(genreSorted);
+            //storing genres
+            setGenreList (genreSorted);
             const docRef = doc(firestore, "users", user.email);
-            await setDoc(docRef, { genreSorted });
+            const userData = { genres: genreSorted };
+            await setDoc(docRef, userData, { merge: true });
             //registered
             navigate(`/movies/genre/${genreSorted[0]}`);
             alert ("Account Created.");
-        } catch {
+        } catch (error) {
+            console.log (error);
             alert("Error creating user with email and password!");
         }
     }
